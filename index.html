@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Clarity</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#161b22">
+  <link rel="icon" href="icon.png">
+  <style>
+    html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;background:#0f141a;color:#fff}
+    .wrap{max-width:520px;margin:0 auto;padding:16px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+    h1{font-size:22px;margin:0}
+    nav{display:flex;gap:8px}
+    button, .btn{background:#1f6feb;color:#fff;border:none;padding:12px 14px;border-radius:12px;font-weight:600}
+    .ghost{background:#22272e}
+    .card{background:#161b22;border:1px solid #30363d;border-radius:16px;padding:16px;margin:12px 0}
+    .row{display:flex;gap:8px;align-items:center}
+    .muted{color:#c4d1de;opacity:.8;font-size:14px}
+    .title{font-size:18px;margin:0 0 8px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;background:#22272e;border:1px solid #30363d;cursor:pointer}
+    .hidden{display:none}
+    input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid #30363d;background:#0f141a;color:#fff}
+    .center{text-align:center}
+    .emoji{font-size:22px}
+    footer{padding:32px 0;color:#8b949e;font-size:12px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Clarity</h1>
+    <nav>
+      <button class="ghost" onclick="showView('home')">Inicio</button>
+      <button class="ghost" onclick="showView('progress')">Progreso</button>
+      <button class="ghost" onclick="showView('help')">Emergencia</button>
+      <button class="ghost" onclick="showView('settings')">Ajustes</button>
+    </nav>
+  </header>
+
+  <div id="onboarding" class="card">
+    <p class="muted">Reto de 14 días para pausar porro/alcohol/juego. Te acompaño cuando “pica”.</p>
+    <h2 class="title">Empecemos</h2>
+    <label>¿Qué querés pausar?</label>
+    <div class="chips">
+      <div class="chip" onclick="setAddiction('porro')">Porro</div>
+      <div class="chip" onclick="setAddiction('alcohol')">Alcohol</div>
+      <div class="chip" onclick="setAddiction('juego')">Juego</div>
+      <div class="chip" onclick="setAddiction('otro')">Otro</div>
+    </div>
+    <div style="height:10px"></div>
+    <label>Tu motivo (1 frase)</label>
+    <input id="reason" placeholder="Quiero recuperar foco, energía y plata.">
+    <div style="height:10px"></div>
+    <button onclick="finishOnboarding()">Empezar</button>
+  </div>
+
+  <div id="home" class="hidden">
+    <div class="card center">
+      <div class="muted">Racha limpia</div>
+      <h2 id="streak" class="title">0 días</h2>
+      <div class="row center" style="justify-content:center; gap:12px">
+        <button onclick="startMePica()">ME PICA</button>
+        <button class="ghost" onclick="showView('checkin')">Check-in</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="title">Tu motivo</h3>
+      <p id="why" class="muted">—</p>
+    </div>
+  </div>
+
+  <div id="checkin" class="hidden card">
+    <h3 class="title">Check-in de hoy</h3>
+    <div class="chips">
+      <div class="chip" onclick="setMood('🙂')">🙂</div>
+      <div class="chip" onclick="setMood('😐')">😐</div>
+      <div class="chip" onclick="setMood('☹️')">☹️</div>
+    </div>
+    <div style="height:10px"></div>
+    <label>Nivel de ganas (0-10)</label>
+    <input id="craving" type="number" min="0" max="10" value="0">
+    <div style="height:10px"></div>
+    <label>Nota corta</label>
+    <textarea id="note" rows="3" placeholder="¿Cómo vas?"></textarea>
+    <div style="height:10px"></div>
+    <button onclick="saveCheckin()">Guardar</button>
+  </div>
+
+  <div id="mepica" class="hidden card">
+    <h3 class="title">Plan de 10 minutos</h3>
+    <ol>
+      <li><b>Respirá</b> 4-4 (60s)</li>
+      <li><b>5-4-3-2-1</b> sensorial (90s)</li>
+      <li><b>Urge surfing</b>: la ola sube 5-10m y baja (3m)</li>
+      <li><b>Movimiento</b>: 20 sentadillas (90s)</li>
+      <li><b>Agua fría</b> + cara (30s)</li>
+      <li><b>Mini-diario</b>: si consumo pasa X / si no gano Y (90s)</li>
+      <li><b>Visualizá</b> tu “por qué” (60s)</li>
+    </ol>
+    <div class="row" style="justify-content:space-between">
+      <button class="ghost" onclick="cancelMePica()">Cancelar</button>
+      <button onclick="completeMePica()">Listo</button>
+    </div>
+    <p class="muted" id="timer">10:00</p>
+  </div>
+
+  <div id="progress" class="hidden">
+    <div class="card">
+      <h3 class="title">Resumen</h3>
+      <p class="muted">Check-ins: <span id="statCheckins">0</span> • “Me pica” completados: <span id="statUrges">0</span></p>
+      <p class="muted">Último check-in: <span id="statLast">—</span></p>
+    </div>
+    <div class="card">
+      <h3 class="title">Compartir</h3>
+      <p class="muted">Descargá una tarjeta con tu día y racha.</p>
+      <button onclick="downloadCard()">Descargar tarjeta</button>
+      <canvas id="card" width="1080" height="1350" class="hidden"></canvas>
+    </div>
+  </div>
+
+  <div id="help" class="hidden card">
+    <h3 class="title">Emergencia</h3>
+    <p class="muted">Esto es bienestar. <b>No</b> reemplaza atención médica. Si estás en crisis, llamá a servicios locales.</p>
+    <div class="chips">
+      <a class="btn" href="tel:911">Llamar 911</a>
+      <a class="btn" href="tel:141">SEDRONAR 141</a>
+    </div>
+  </div>
+
+  <div id="settings" class="hidden card">
+    <h3 class="title">Ajustes</h3>
+    <button class="ghost" onclick="resetApp()">Borrar mis datos</button>
+  </div>
+
+  <footer class="center">
+    v1 • Clarity — PWA local, sin servidor • Instalá desde tu navegador (“Añadir a inicio”)
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+</script>
+</body>
+</html>

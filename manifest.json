@@ -1,9 +1,9 @@
 {
   "name": "Clarity",
   "short_name": "Clarity",
-  "description": "App de bienestar de 14 días para pausar porro, alcohol o juego y acompañarte cuando 'pica'.",
-  "id": "com.santinopizzolo.clarity",
-  "start_url": "./",
+  "description": "Ayuda para dejar o reducir adicciones. Herramientas breves, registro y apoyo (no médico).",
+  "id": "app.clarityhelp",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0f141a",
   "theme_color": "#161b22",

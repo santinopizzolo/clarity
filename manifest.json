@@ -3,33 +3,18 @@
   "short_name": "Clarity",
   "description": "App de bienestar de 14 días para pausar porro, alcohol o juego y acompañarte cuando 'pica'.",
   "id": "com.santinopizzolo.clarity",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#0f141a",
+  "theme_color": "#161b22",
   "orientation": "portrait",
+  "launch_handler": { "client_mode": "navigate" },
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ],
   "screenshots": [
-    {
-      "src": "screenshots/screen1.png",
-      "sizes": "1242x2688",
-      "type": "image/png"
-    },
-    {
-      "src": "screenshots/screen2.png",
-      "sizes": "1242x2688",
-      "type": "image/png"
-    }
+    { "src": "screenshots/screen1.png", "sizes": "1242x2688", "type": "image/png" },
+    { "src": "screenshots/screen2.png", "sizes": "1242x2688", "type": "image/png" }
   ]
 }
